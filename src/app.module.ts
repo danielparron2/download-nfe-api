@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { CertificadosModule } from './certificados/certificados.module';
+import { SoapModule } from './soap/soap.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CertificadosModule } from './certificados/certificados.module';
     }),
     UsuariosModule,
     CertificadosModule,
+    SoapModule,
   ],
 })
 export class AppModule {}
