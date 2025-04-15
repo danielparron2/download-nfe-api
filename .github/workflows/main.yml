@@ -26,5 +26,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            dfernandesapoioprodesp/danielparronfernandes/nota-barueri-api:v1
-            dfernandesapoioprodesp/danielparronfernandes/nota-barueri-api:latest
+            dfernandesapoioprodesp/nota-barueri-api:v1
+            dfernandesapoioprodesp/nota-barueri-api:latest
