@@ -1,0 +1,23 @@
+name: PIPELINE-CI-CD
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4.2.2
+      
+      - name: Build da imagem
+      - uses: docker/build-push-action@v6.15.0
+        with: 
+          context: ./src
+          file: ./src/Dockerfile
+          push: true
+          tags: |
+            danielparron2/nota-barueri-api:v1
+            danielparron2/nota-barueri-api:latest
