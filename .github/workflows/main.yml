@@ -28,3 +28,5 @@ jobs:
           tags: |
             dfernandesapoioprodesp/nota-barueri-api:v1
             dfernandesapoioprodesp/nota-barueri-api:latest
+
+            
