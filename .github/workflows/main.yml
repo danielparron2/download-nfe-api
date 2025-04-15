@@ -26,7 +26,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            dfernandesapoioprodesp/nota-barueri-api:v1
+            dfernandesapoioprodesp/nota-barueri-api:${{gitub.run.number}}
             dfernandesapoioprodesp/nota-barueri-api:latest
 
             
