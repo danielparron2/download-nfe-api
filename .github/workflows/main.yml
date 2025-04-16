@@ -67,7 +67,8 @@ jobs:
 
       - name: Activate Service Account
         run: |
-          echo "${{ secrets.GCP_KEY }}" > key.json
+          echo "${{ secrets.GCP_KEY }}" | tr -d '\r' > key.json
+          cat key.json  # Opcional: depurar o conteúdo
           gcloud auth activate-service-account --key-file=key.json
           rm key.json
 
