@@ -37,7 +37,7 @@ metadata:
   name: download-api
 spec:
   selector: 
-    app: download_api
+    app: download-api
   ports:
     - port: 80
       targetPort: 3000
