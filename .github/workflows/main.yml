@@ -43,10 +43,10 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{secrets.K8S_KUBECONFIG}}
 
-#      - name: Deploy
-#        uses: Azure/k8s-deploy@v4.9
-#        with:
-#          images: dfernandesapoioprodesp/nota-barueri-api:v${{github.run.number}}
-#          manifests: |
-#            k8s/deployment.yaml
+      - name: Deploy
+        uses: Azure/k8s-deploy@v4.9
+        with:
+          images: dfernandesapoioprodesp/nota-barueri-api:v${{github.run.number}}
+          manifests: |
+            k8s/deployment.yaml
       
