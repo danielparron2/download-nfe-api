@@ -65,6 +65,10 @@ jobs:
           service_account_key: ${{ secrets.GCP_KEY }}
           export_default_credentials: true
 
+      - name: Activate Service Account
+        run: |
+          echo ${{ secrets.GCP_KEY }} | gcloud auth activate-service-account --key-file=-
+
       - name: Validate Authentication
         run: |
           gcloud auth list
@@ -76,7 +80,4 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl set image -f k8s/deployment.yaml \
-            deployment/nota-barueri-api \
-            dfernandesapoioprodesp/nota-barueri-api:v${{github.run.number}}
           kubectl apply -f k8s/deployment.yaml
