@@ -29,7 +29,11 @@ jobs:
             dfernandesapoioprodesp/nota-barueri-api:v${{github.run.number}}
             dfernandesapoioprodesp/nota-barueri-api:latest
 <<<<<<< HEAD
+<<<<<<< HEAD
   
+=======
+        
+>>>>>>> cda2d262327d6263b0c2af38e6cc5a02159f4181
 =======
         
 >>>>>>> cda2d262327d6263b0c2af38e6cc5a02159f4181
@@ -63,9 +67,15 @@ jobs:
           gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_REGION }}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
  #     - name: Update Image in Manifest
  #       run: |
  #         sed -i "s|IMAGE_TAG|${{ github.run.number }}|g" k8s/deployment.yaml
+=======
+  #    - name: Update Image in Manifest
+  #      run: |
+  #        sed -i "s|IMAGE_TAG|${{ github.run.number }}|g" k8s/deployment.yaml
+>>>>>>> cda2d262327d6263b0c2af38e6cc5a02159f4181
 =======
   #    - name: Update Image in Manifest
   #      run: |
