@@ -84,11 +84,5 @@ jobs:
           sed -i "s|IMAGE_TAG|${{ github.run.number }}|g" k8s/deployment.yaml
 
       - name: Deploy to Kubernetes
-        uses: azure/k8s-deploy@v4
-        with:
-          manifests: |
-            k8s/deployment.yaml
-            k8s/service.yaml
-          images: |
-            dfernandesapoioprodesp/nota-barueri-api:v${{ github.run.number }}
-          namespace: default
+        run: |
+          kubectl apply -f k8s/deployment.yaml
