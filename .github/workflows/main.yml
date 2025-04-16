@@ -68,22 +68,12 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
           export_default_credentials: true
+          install_components: kubectl
 
       - name: Validate Authentication
         run: |
           gcloud auth list
           gcloud config list
-
-      - name: Add Google Cloud SDK repository
-        run: |
-          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-          sudo apt-get install -y apt-transport-https ca-certificates gnupg
-          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
-          sudo apt-get update
-
-      - name: Install gke-gcloud-auth-plugin
-        run: |
-          sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
 
       - name: Get GKE Cluster Credentials
         run: |
@@ -94,5 +84,11 @@ jobs:
           sed -i "s|IMAGE_TAG|${{ github.run.number }}|g" k8s/deployment.yaml
 
       - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f k8s/deployment.yaml
+        uses: azure/k8s-deploy@v4
+        with:
+          manifests: |
+            k8s/deployment.yaml
+            k8s/service.yaml
+          images: |
+            dfernandesapoioprodesp/nota-barueri-api:v${{ github.run.number }}
+          namespace: default
