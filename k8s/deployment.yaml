@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: download_api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: download_api
+  template:
+    metadata:
+      labels:
+        app: download_api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: download_api
+          image: dfernandesapoioprodesp/nota-barueri-api
+          ports:
+          - containerPort: 3000
+          env:
+          - name: DB_DATABASE
+            value: "tcc-downloads"
+          - name: DB_USERNAME
+            value: "root"
+          - name: DB_PASSWORD
+            value: "9aX4BjcY" 
+          - name: DB_HOST
+            value: "10.79.224.3"  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: download_api
+spec:
+  selector: 
+    app: download_api
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: LoadBalancer

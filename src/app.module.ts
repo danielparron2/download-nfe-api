@@ -10,7 +10,7 @@ import { SoapModule } from './soap/soap.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '130.211.228.255',
+      host: '10.79.224.3',
       port: 3306,
       username: 'root',
       password: '9aX4BjcY',
