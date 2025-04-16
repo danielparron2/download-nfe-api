@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: download-api
-          image: dfernandesapoioprodesp/nota-barueri-api:vIMAGE_TAG
+          image: dfernandesapoioprodesp/nota-barueri-api:latest
           ports:
           - containerPort: 3000
           env:
