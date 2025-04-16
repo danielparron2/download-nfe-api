@@ -13,7 +13,7 @@ async function bootstrap() {
     .setTitle('API de Usuários')
     .setDescription('Documentação da API de Usuários')
     .setVersion('1.0')
-    .addTag('downloadxmls') // Define a categoria da rota
+    .addTag('downloadxmls 2') // Define a categoria da rota
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
