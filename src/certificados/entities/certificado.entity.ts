@@ -1,12 +1,12 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
 @Entity('CERTFICADOS_DIGITAIS')
 export class Certificado {
-  @PrimaryColumn({ name: 'ID_USUARIO' })
+  @Column({ name: 'ID_USUARIO' })
   usuarioId: number;
 
-  @PrimaryColumn({ name: 'ID_CERTIFICADO' })
+  @PrimaryGeneratedColumn({ name: 'ID_CERTIFICADO' })
   certificadoId: number;
 
   @Column({ name: 'NR_CNPJ', nullable: true })

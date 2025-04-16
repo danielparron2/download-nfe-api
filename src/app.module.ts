@@ -10,11 +10,11 @@ import { SoapModule } from './soap/soap.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: '130.211.228.255',
       port: 3306,
       username: 'root',
-      password: 'Sant**3692',
-      database: 'tcc_download',
+      password: '9aX4BjcY',
+      database: 'tcc-downloads',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
