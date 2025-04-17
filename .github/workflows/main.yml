@@ -26,8 +26,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            dfernandesapoioprodesp/nota-barueri-api:v${{github.run.number}}
-            dfernandesapoioprodesp/nota-barueri-api:latest
+            dfernandesapoioprodesp/download-nfe-api:v${{github.run.number}}
+            dfernandesapoioprodesp/download-nfe-api:latest
 
   CD:
     runs-on: ubuntu-latest
