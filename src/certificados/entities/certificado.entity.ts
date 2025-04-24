@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
 @Entity('CERTFICADOS_DIGITAIS')
 export class Certificado {
@@ -21,7 +20,7 @@ export class Certificado {
   @Column({ name: 'DS_SENHA_CERTIFICADO', nullable: true })
   senhaCertificado: string;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.certificados)
-  @JoinColumn({ name: 'ID_USUARIO' })
-  usuario: Usuario;
+//  @ManyToOne(() => Usuario, (usuario) => usuario.certificados)
+//  @JoinColumn({ name: 'ID_USUARIO' })
+//  usuario: Usuario;
 }

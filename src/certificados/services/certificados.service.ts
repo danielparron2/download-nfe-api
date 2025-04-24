@@ -11,7 +11,7 @@ export class CertificadosService {
   ) {}
 
   findAll(): Promise<Certificado[]> {
-    return this.certificadoRepository.find({ relations: ['usuario'] });
+    return this.certificadoRepository.find();
   }
 
   findOne(usuarioId: number, certificadoId: number): Promise<Certificado | null> {

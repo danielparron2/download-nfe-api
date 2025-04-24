@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Certificado } from '../../certificados/entities/certificado.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('USUARIOS')
 export class Usuario {
@@ -12,6 +12,12 @@ export class Usuario {
   @Column({ name: 'DS_SENHA', nullable: true })
   senha: string;
 
-  @OneToMany(() => Certificado, (certificado) => certificado.usuario)
-  certificados: Certificado[];
+  @Column({ name: 'NM_USUARIO', nullable: true })
+  name: string;
+
+//  @OneToMany(() => Certificado, (certificado) => certificado.usuario)
+//  certificados: Certificado[];
+//  @OneToMany(() => Certificado, (certificado) => certificado.usuario, { cascade: true })
+//  @ApiProperty({ type: () => Certificado })
+//  certificados: Certificado[];
 }
