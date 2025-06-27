@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as https from 'https';
-import * as soap from 'soap';
+import axios from 'axios';
 
 @Injectable()
 export class SoapService {
-  private readonly wsdlUrl = 'https://servicos.barueri.sp.gov.br/nfewsxml/wsgeraxml.asmx?WSDL';
+  private readonly endpoint = 'https://servicos.barueri.sp.gov.br/nfewsxml/wsgeraxml.asmx';
+  private readonly soapAction = 'http://www.barueri.sp.gov.br/nfe/ConsultaNFeRecebidaPeriodo';
 
   async consumeWs(
     cnpj: string,
@@ -12,20 +13,20 @@ export class SoapService {
     certPassword: string,
     dtInicio: string,
     dtTermino: string,
-  ): Promise<any> {
-
-    // Converter o certificado Base64 em Buffer
+  ): Promise<string> {
+    // Converter certificado Base64 para Buffer
     const certBuffer = Buffer.from(certBase64, 'base64');
 
-    // Configurar o agente HTTPS com o certificado e senha
+    // Criar agente HTTPS com certificado
     const httpsAgent = new https.Agent({
       pfx: certBuffer,
       passphrase: certPassword,
-      rejectUnauthorized: false, // Permitir conexões sem CA válida (se necessário)
+      rejectUnauthorized: false, 
+      keepAlive: false,
     });
 
-    // Criar XML idêntico ao enviado no C#
-    const soapXml = `
+    // Montar envelope SOAP completo
+    const soapEnvelope = `
       <?xml version="1.0" encoding="utf-8"?>
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfe="http://www.barueri.sp.gov.br/nfe">
         <soapenv:Header/>
@@ -47,33 +48,20 @@ export class SoapService {
       </soapenv:Envelope>
     `;
 
-    // Log do XML gerado
-    console.log('XML enviado:', soapXml);
-
-    // Criar um cliente SOAP customizado para usar o agente HTTPS
-    const customHttpClient = new soap.HttpClient();
-    customHttpClient.request = function (rurl, data, callback, exheaders, exoptions = {}) {
-      exoptions.agent = httpsAgent; // Configurar o agente HTTPS
-      return soap.HttpClient.prototype.request.call(this, rurl, data, callback, exheaders, exoptions);
-    };
-
-    const client = await soap.createClientAsync(this.wsdlUrl, { httpClient: customHttpClient });
-
     try {
-      // Enviar a requisição para a API
-      const result = await client.ConsultaNFeRecebidaPeriodoAsync({
-        ConsultaNFeRecebidaPeriodo: {
-          VersaoSchema: '1',
-          MensagemXML: soapXml,
+      const response = await axios.post(this.endpoint, soapEnvelope, {
+        httpsAgent,
+        headers: {
+          'Content-Type': 'text/xml;charset=utf-8',
+          'SOAPAction': this.soapAction,
         },
       });
 
-      // Retornar o resultado
-      console.log('Resposta SOAP:', result);
-      return result;
+      console.log('Resposta SOAP:', response.data);
+      return response.data;
     } catch (error) {
       console.error('Erro na requisição SOAP:', error.message);
-      throw new Error(`Requisição SOAP falhou: ${error.message}`);
+      throw new Error(`Erro ao consumir o serviço SOAP: ${error.message}`);
     }
   }
 }
