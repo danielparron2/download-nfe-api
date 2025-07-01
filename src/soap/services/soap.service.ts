@@ -5,6 +5,7 @@ import axios from 'axios';
 @Injectable()
 export class SoapService {
   private readonly endpoint = 'https://servicos.barueri.sp.gov.br/nfewsxml/wsgeraxml.asmx';
+  // Se quiser testar removendo SOAPAction, pode comentar esta linha e o header.
   private readonly soapAction = 'http://www.barueri.sp.gov.br/nfe/ConsultaNFeRecebidaPeriodo';
 
   async consumeWs(
@@ -14,54 +15,52 @@ export class SoapService {
     dtInicio: string,
     dtTermino: string,
   ): Promise<string> {
-    // Converter certificado Base64 para Buffer
     const certBuffer = Buffer.from(certBase64, 'base64');
 
-    // Criar agente HTTPS com certificado
     const httpsAgent = new https.Agent({
       pfx: certBuffer,
       passphrase: certPassword,
-      rejectUnauthorized: false, 
+      rejectUnauthorized: false,
       keepAlive: false,
     });
 
-    // Montar envelope SOAP completo
-    const soapEnvelope = `
-      <?xml version="1.0" encoding="utf-8"?>
-      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfe="http://www.barueri.sp.gov.br/nfe">
-        <soapenv:Header/>
-        <soapenv:Body>
-          <nfe:ConsultaNFeRecebidaPeriodo>
-            <nfe:VersaoSchema>1</nfe:VersaoSchema>
-            <nfe:MensagemXML>
-              <![CDATA[
-                <NFeRecebidaPeriodo xmlns="http://www.barueri.sp.gov.br/nfe">
-                  <CPFCNPJTomador>${cnpj}</CPFCNPJTomador>
-                  <DataInicial>${dtInicio}</DataInicial>
-                  <DataFinal>${dtTermino}</DataFinal>
-                  <Pagina>1</Pagina>
-                </NFeRecebidaPeriodo>
-              ]]>
-            </nfe:MensagemXML>
-          </nfe:ConsultaNFeRecebidaPeriodo>
-        </soapenv:Body>
-      </soapenv:Envelope>
-    `;
+    // Monta o XML minificado dentro do CDATA (sem quebras de linha extras)
+    const mensagemXML = `<NFeRecebidaPeriodo xmlns="http://www.barueri.sp.gov.br/nfe">` +
+      `<CPFCNPJTomador>${cnpj}</CPFCNPJTomador>` +
+      `<DataInicial>${dtInicio}</DataInicial>` +
+      `<DataFinal>${dtTermino}</DataFinal>` +
+      `<Pagina>1</Pagina>` +
+      `</NFeRecebidaPeriodo>`;
+
+    const soapEnvelope = `<?xml version="1.0" encoding="utf-8"?>` +
+      `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfe="http://www.barueri.sp.gov.br/nfe">` +
+      `<soapenv:Header/>` +
+      `<soapenv:Body>` +
+      `<nfe:ConsultaNFeRecebidaPeriodo>` +
+      `<nfe:VersaoSchema>1</nfe:VersaoSchema>` +
+      `<nfe:MensagemXML><![CDATA[${mensagemXML}]]></nfe:MensagemXML>` +
+      `</nfe:ConsultaNFeRecebidaPeriodo>` +
+      `</soapenv:Body>` +
+      `</soapenv:Envelope>`;
+
+    console.log('Envelope SOAP enviado:\n', soapEnvelope);
 
     try {
       const response = await axios.post(this.endpoint, soapEnvelope, {
         httpsAgent,
         headers: {
-          'Content-Type': 'text/xml;charset=utf-8',
+          'Content-Type': 'text/xml;charset="utf-8"',
+          'Accept': 'text/xml',
+          // Teste comentar essa linha se 400 persistir
           'SOAPAction': this.soapAction,
         },
       });
 
       console.log('Resposta SOAP:', response.data);
       return response.data;
-    } catch (error) {
-      console.error('Erro na requisição SOAP:', error.message);
-      throw new Error(`Erro ao consumir o serviço SOAP: ${error.message}`);
+    } catch (error: any) {
+      console.error('Erro na requisição SOAP:', error.message || error);
+      throw new Error(`Erro ao consumir o serviço SOAP: ${error.message || error}`);
     }
   }
 }
