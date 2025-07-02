@@ -9,15 +9,15 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',    //localhost
-      //host: '10.79.224.3',    //privado
+      //host: 'localhost',    //localhost
+      host: '10.79.224.3',    //privado
       //host: '130.211.228.255',  //público
       port: 3306,
       username: 'root',
-      //password: '9aX4BjcY',
-      password: 'Sant**3692',  //localhost
-      //database: 'tcc-downloads',
-      database: 'TCC_DOWNLOAD',   //localost
+      password: '9aX4BjcY',
+      //password: 'Sant**3692',  //localhost
+      database: 'tcc-downloads',
+      //database: 'TCC_DOWNLOAD',   //localost
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
