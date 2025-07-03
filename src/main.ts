@@ -29,7 +29,7 @@ async function bootstrap() {
   // Habilita o CORS para o domínio específico
   app.enableCors({
     //origin: 'http://localhost:3001',
-    origin: '*', 
+    origin: 'http://35.224.55.94', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Accept, Authorization',
   });
